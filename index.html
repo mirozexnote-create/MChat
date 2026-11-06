@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MChat</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{background:#0f0f1a;color:white;height:100vh;display:flex;flex-direction:column}
+header{background:#1e1e2e;padding:15px;text-align:center;font-size:22px;font-weight:bold}
+header span{color:#00ff88}
+#chat{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px}
+.msg{background:#2a2a3e;padding:10px 14px;border-radius:15px;max-width:80%;align-self:flex-start}
+.msg.me{background:#00c853;color:white;align-self:flex-end}
+.msg b{display:block;font-size:12px;color:#00ff88;margin-bottom:3px}
+.msg.me b{color:#e8ffe8}
+.time{font-size:10px;opacity:.6;text-align:right;margin-top:4px}
+#box{display:flex;padding:10px;background:#1e1e2e;gap:8px}
+input{flex:1;padding:13px;border:none;border-radius:25px;background:#2a2a3e;color:white;outline:none}
+button{padding:13px 20px;border:none;border-radius:25px;background:#00c853;color:white;font-weight:bold}
+#login{position:fixed;inset:0;background:#0f0f1a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;padding:20px;z-index:10}
+#login h1{font-size:40px}
+#login h1 span{color:#00ff88}
+#login input{width:100%;max-width:300px;text-align:center}
+</style>
+</head>
+<body>
+<div id="login">
+<h1>M<span>Chat</span></h1>
+<p>Ismingni yoz va kir!</p>
+<input id="nameInput" placeholder="Isming...">
+<button onclick="join()">Kirish 🚀</button>
+</div>
+
+<header>M<span>Chat</span> 💬</header>
+<div id="chat"></div>
+<div id="box">
+<input id="msgInput" placeholder="Xabar yoz...">
+<button onclick="send()">Yubor ➤</button>
+</div>
+
+<script>
+let myName = localStorage.getItem('mchat_name') || '';
+let msgs = JSON.parse(localStorage.getItem('mchat_msgs') || '[]');
+function join(){
+  let n = document.getElementById('nameInput').value.trim();
+  if(!n) return alert('Ismingni yoz!');
+  myName = n;
+  localStorage.setItem('mchat_name', n);
+  document.getElementById('login').style.display='none';
+  render();
+}
+function render(){
+  let c = document.getElementById('chat');
+  c.innerHTML='';
+  msgs.forEach(m=>{
+    let d=document.createElement('div');
+    d.className='msg'+(m.name===myName?' me':'');
+    d.innerHTML='<b>'+m.name+'</b>'+m.text+'<div class="time">'+m.time+'</div>';
+    c.appendChild(d);
+  });
+  c.scrollTop=c.scrollHeight;
+}
+function send(){
+  let inp=document.getElementById('msgInput');
+  let t=inp.value.trim();
+  if(!t) return;
+  let time=new Date().toLocaleTimeString('uz-UZ',{hour:'2-digit',minute:'2-digit'});
+  msgs.push({name:myName,text:t,time:time});
+  localStorage.setItem('mchat_msgs',JSON.stringify(msgs));
+  inp.value=''; render();
+}
+document.getElementById('msgInput').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+if(myName){document.getElementById('login').style.display='none'; render();}
+</script>
+</body>
+</html>
