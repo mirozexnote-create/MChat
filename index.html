@@ -6,45 +6,39 @@
 <title>Azizbek - Chat</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#000;color:#fff;overflow:hidden}
+body{background:#000;color:#fff;overflow-x:hidden}
 header{display:flex;align-items:center;gap:10px;padding:12px;background:#000}
-.menu{font-size:26px;cursor:pointer;background:none;border:none;color:#fff}
-.search{flex:1;background:#2a2a2a;border-radius:25px;display:flex;align-items:center;padding:0 14px;height:42px}
-.search input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:14px}
+.menu{font-size:26px;cursor:pointer;background:none;border:none;color:#fff;flex-shrink:0}
+.search{flex:1;background:#2a2a2a;border-radius:25px;display:flex;align-items:center;padding:0 14px;height:42px;min-width:0}
+.search input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:14px;min-width:0}
 .search input::placeholder{color:#888}
-.tabs{display:flex;justify-content:space-around;padding:12px 0;border-bottom:1px solid #222}
-.tab{text-align:center;color:#b0b0b0;font-size:11px;cursor:pointer}
+.tabs{display:flex;gap:5px;padding:10px 8px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{text-align:center;color:#b0b0b0;font-size:11px;cursor:pointer;min-width:62px;flex-shrink:0;padding:4px}
 .tab span{font-size:22px;display:block;margin-bottom:4px}
 .tab.active{color:#fff}
-.chat{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #111;cursor:pointer;position:relative;background:#000}
-.chat img,.avatar{width:50px;height:50px;border-radius:50%;background:#555;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold;flex-shrink:0}
+.chat{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #111;cursor:pointer;background:#000}
+.avatar{width:50px;height:50px;border-radius:50%;background:#555;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold;flex-shrink:0}
 .info{flex:1;min-width:0}
 .info b{font-size:15px}
 .info p{color:#888;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.time{color:#888;font-size:12px}
-/* DRAWER - YARMIGACHA */
-.drawer{position:fixed;top:0;left:-52%;width:52%;height:100%;background:#fff;color:#000;transition:0.3s;z-index:100;overflow-y:auto}
+.time{color:#888;font-size:12px;flex-shrink:0}
+.trash{background:none;border:none;font-size:18px;cursor:pointer;padding:6px;flex-shrink:0}
+.drawer{position:fixed;top:0;left:-78%;width:78%;max-width:320px;height:100%;background:#fff;color:#000;transition:0.3s;z-index:100;overflow-y:auto}
 .drawer.open{left:0}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;z-index:99}
 .overlay.show{display:block}
-.drawer-top{background:#00897B;padding:50px 16px 16px;color:#fff}
+.drawer-top{background:#00897B;padding:45px 16px 16px;color:#fff}
 .drawer-top .avatar{background:#fff;color:#00897B;width:60px;height:60px;font-size:26px}
 .drawer-top h3{margin-top:12px;font-size:18px}
-.d-item{display:flex;gap:14px;padding:13px 16px;font-size:15px;align-items:center;cursor:pointer}
+.d-item{display:flex;gap:12px;padding:13px 16px;font-size:15px;align-items:center;cursor:pointer;white-space:nowrap}
 .d-item:hover{background:#f0f0f0}
-.del-btn{background:#ff3b30;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;display:none}
 </style>
 </head>
 <body>
-
 <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
-
-<!-- YON MENYU -->
 <div class="drawer" id="drawer">
-  <div class="drawer-top">
-    <div class="avatar">A</div>
-    <h3>Azizbek</h3>
-  </div>
+  <div class="drawer-top"><div class="avatar">A</div><h3>Azizbek</h3></div>
   <div class="d-item">👤 Profilim</div>
   <div class="d-item">👥 Yangi guruh</div>
   <div class="d-item">📢 Yangi kanal</div>
@@ -55,14 +49,12 @@ header{display:flex;align-items:center;gap:10px;padding:12px;background:#000}
   <div class="d-item">⚙️ Sozlamalar</div>
   <div class="d-item">➕ Plus sozlamalari</div>
   <div class="d-item">📂 Toifalar</div>
-  <div class="d-item">🎨 Mavzularni yuklab olish</div>
+  <div class="d-item">🎨 Mavzular</div>
 </div>
-
 <header>
   <button class="menu" onclick="openDrawer()">☰</button>
-  <div class="search"><span style="margin-right:8px">🔍</span><input id="searchInput" placeholder="Qidiruv" oninput="filterChats()"></div>
+  <div class="search"><span style="margin-right:8px">🔍</span><input id="searchInput" placeholder="Qidiruv" oninput="render()"></div>
 </header>
-
 <div class="tabs">
   <div class="tab active" onclick="setTab(this,'all')"><span>👤</span>Shaxsiy</div>
   <div class="tab" onclick="setTab(this,'gruppa')"><span>👥</span>Gruppa</div>
@@ -70,9 +62,7 @@ header{display:flex;align-items:center;gap:10px;padding:12px;background:#000}
   <div class="tab" onclick="setTab(this,'sevimli')"><span>⭐</span>Sevimli</div>
   <div class="tab" onclick="setTab(this,'bot')"><span>🤖</span>Bot</div>
 </div>
-
 <div id="chatList"></div>
-
 <script>
 let chats=[
  {name:"Sardor",msg:"OK, ertaga ko'rishamiz",time:"09:22",av:"S",type:"all"},
@@ -86,10 +76,9 @@ function render(){
  let list=document.getElementById('chatList');
  list.innerHTML='';
  chats.filter(c=>(curTab==='all'||c.type===curTab)&&c.name.toLowerCase().includes(q)).forEach((c,i)=>{
-  list.innerHTML+=`<div class="chat"><div class="avatar">${c.av}</div><div class="info"><b>${c.name}</b><p>${c.msg}</p></div><div class="time">${c.time}</div><button class="del-btn" onclick="delChat(${i})" style="display:block">O'chirish</button></div>`;
+  list.innerHTML+=`<div class="chat"><div class="avatar">${c.av}</div><div class="info"><b>${c.name}</b><p>${c.msg}</p></div><div class="time">${c.time}</div><button class="trash" onclick="delChat(${i})">🗑️</button></div>`;
  });
 }
-function filterChats(){render()}
 function setTab(el,t){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');curTab=t;render()}
 function delChat(i){if(confirm(chats[i].name+" o'chirilsinmi?")){chats.splice(i,1);render()}}
 function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('show')}
