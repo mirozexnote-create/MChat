@@ -1,110 +1,198 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MChat</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-body{background:#fff;color:#111}
-header{background:#000;color:#fff;padding:10px 12px 8px;position:sticky;top:0;z-index:10}
-.top{display:flex;align-items:center;gap:12px}
-.top h1{font-size:16px;font-weight:600;flex:1}
-.top span{font-size:18px;cursor:pointer}
-.tabs{background:#000;display:flex;justify-content:space-between;padding:6px 8px 10px;gap:4px}
-.tab{flex:1;text-align:center;color:#aaa;cursor:pointer;padding:6px 2px;border-radius:10px}
-.tab.active{color:#fff;background:#222}
-.tab .ic{font-size:20px;display:block;line-height:1}
-.tab small{font-size:10px;display:block;margin-top:3px}
-.tab b{font-size:9px;background:#333;color:#fff;padding:1px 4px;border-radius:10px;position:absolute;margin:-4px 0 0 8px}
-.search{margin:8px 12px;background:#f1f1f1;border-radius:20px;padding:7px 12px;font-size:12px;color:#777}
-.chat{display:flex;gap:10px;padding:8px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer}
-.avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:600;flex-shrink:0;overflow:hidden}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.info{flex:1;min-width:0}
-.row{display:flex;justify-content:space-between;align-items:center}
-.name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.time{font-size:11px;color:#7a7a7a;flex-shrink:0;margin-left:6px}
-.msg{font-size:12px;color:#5f6368;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
-.badge{background:#000;color:#fff;font-size:10px;min-width:16px;height:16px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px}
-.msgbox{display:none;padding:12px}
-.msgbox.active{display:block}
-.m{max-width:75%;padding:7px 10px;border-radius:12px;font-size:13px;margin:6px 0}
-.me{background:#000;color:#fff;margin-left:auto}
-.other{background:#f1f1f1}
-input,button{font-size:13px}
-#sendBar{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;padding:8px;display:flex;gap:6px;border-top:1px solid #eee}
-#sendBar input{flex:1;padding:8px 12px;border-radius:20px;border:1px solid #ddd;outline:none;font-size:13px}
-#sendBar button{background:#000;color:#fff;border:none;padding:8px 14px;border-radius:20px}
-.back{cursor:pointer;font-size:13px}
-</style>
-</head>
-<body>
+import 'package:flutter/material.dart';
 
-<div id="home">
-<header>
-<div class="top"><span onclick="openMenu()">☰</span><h1 id="title">Shaxsiy</h1><span>🔒</span><span>🔍</span><span>📁</span></div>
-<div class="tabs">
-<div class="tab active" onclick="filter('all',this)"><span class="ic">👤</span><small>Shaxsiy</small></div>
-<div class="tab" onclick="filter('group',this)"><span class="ic">👥</span><small>Gruppa</small></div>
-<div class="tab" onclick="filter('channel',this)"><span class="ic">📣</span><small>Kanal</small></div>
-<div class="tab" onclick="filter('fav',this)"><span class="ic">⭐</span><small>Sevimli</small></div>
-<div class="tab" onclick="filter('bot',this)"><span class="ic">🤖</span><small>Bot</small></div>
-</div>
-</header>
-<div class="search">🔍 Qidirish...</div>
-<div id="list"></div>
-</div>
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-<div id="chatView" style="display:none">
-<header><div class="top"><span class="back" onclick="goHome()">←</span><h1 id="chatName">Chat</h1><span>📞</span><span>⋮</span></div></header>
-<div class="msgbox active" id="msgs"></div>
-</div>
-<div id="sendBar"><input id="inp" placeholder="Xabar yozing..."><button onclick="send()">➤</button></div>
+class _HomeScreenState extends State<HomeScreen> {
+  // ===== SEN FAQAT SHU YERNI O'ZGARTIRASAN, AZIZBEK! =====
+  String meningIsmim = "Azizbek";
+  String meningHarfim = "A";
+  // =======================================================
 
-<script>
-let chats=[
-{name:"Saqlangan xabarlar",msg:"<!DOCTYPE html> <html lang=",time:"21:01",type:"all",color:"#0ea5e9",icon:"🔖"},
-{name:"#ZxNFTz",msg:"1. Shoxjohon Mamatov 2. Oyb...",time:"26-sen",type:"group",color:"#111",icon:"🖼️"},
-{name:"Sarvar Madrahimov",msg:"1. Azizbek Umarov 2. Abduqodi...",time:"19-okt",type:"group",color:"#333",icon:"👤"},
-{name:"#Mirozex |",msg:"🥰 Stiker",time:"03-sen",type:"fav",color:"#111",icon:"😎"},
-{name:"Rasulbek",msg:"👋 Stiker",time:"15-okt",type:"all",color:"#111",icon:"🌑"},
-{name:"Nazarbek",msg:"Qoralama: +998941153868",time:"14-okt",type:"all",color:"#f97316",icon:"N"},
-{name:"Admen",msg:"✅ Stiker",time:"07-okt",type:"all",color:"#111",icon:"🎭"},
-{name:"DIYORBek",msg:"🎥 Video",time:"05-okt",type:"all",color:"#111",icon:"🌙"},
-{name:"OFFLINE 📴",msg:"🥰 Stiker",time:"07-iyun",type:"bot",color:"#0ea5e9",icon:"👻"},
-{name:"MChat Bot",msg:"/start buyrug'i bajarildi",time:"Kecha",type:"bot",color:"#10b981",icon:"🤖"},
-{name:"Yangiliklar Kanal",msg:"Yangi post: Haftalik yangilik",time:"Kecha",type:"channel",color:"#7c3aed",icon:"📣"},
-];
-let cur='all';
-function render(){
-let l=document.getElementById('list');l.innerHTML='';
-chats.filter(c=>cur=='all'||c.type==cur||(cur=='all')).forEach((c,i)=>{
-if(cur!='all'&&c.type!=cur&&!(cur=='fav'&&c.type=='fav'))return;
-if(cur=='all'&&false)return;
-l.innerHTML+=`<div class="chat" onclick="openChat(${chats.indexOf(c)})"><div class="avatar" style="background:${c.color}">${c.icon}</div><div class="info"><div class="row"><span class="name">${c.name}</span><span class="time">${c.time}</span></div><div class="msg">${c.msg}</div></div></div>`
-});
+  final TextEditingController _searchController = TextEditingController();
+  String searchQuery = "";
+
+  List<Map<String, String>> chats = [
+    {"name": "Sardor", "msg": "OK, ertaga ko'rishamiz", "time": "09:22", "avatar": "S"},
+    {"name": "Oila guruhi", "msg": "Kechki ovqat soat 8da", "time": "12:45", "avatar": "O"},
+    {"name": "Yangiliklar", "msg": "Yangi post", "time": "08:10", "avatar": "Y"},
+    {"name": "Dildora", "msg": "Rasm yubordi", "time": "kecha", "avatar": "D"},
+  ];
+
+  void _deleteChat(int index) {
+    setState(() { chats.removeAt(index); });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Chat o'chirildi")),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      // 5. YON MENYU - YARMIGACHA
+      drawer: Drawer(
+        width: MediaQuery.of(context).size.width * 0.52,
+        backgroundColor: Colors.white,
+        child: Column(
+          children: [
+            // TEPADA SENING PROFILING, AZIZBEK! Nomer yo'q!
+            Container(
+              width: double.infinity,
+              color: const Color(0xFF00897B),
+              padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child: Text(meningHarfim,
+                        style: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold, color: Colors.teal)),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(meningIsmim,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  _drawerItem(Icons.person_outline, "Profilim", () {}),
+                  _drawerItem(Icons.group_outlined, "Yangi guruh", () {}),
+                  _drawerItem(Icons.campaign_outlined, "Yangi kanal", () {}),
+                  _drawerItem(Icons.contacts_outlined, "Kontaktlar", () {}),
+                  _drawerItem(Icons.folder_outlined, "Chat jildlari", () {}),
+                  _drawerItem(Icons.bookmark_border, "Saqlangan xabarlar", () {}),
+                  _drawerItem(Icons.call_outlined, "Chaqiruvlar", () {}),
+                  _drawerItem(Icons.settings_outlined, "Sozlamalar", () {}),
+                  _drawerItem(Icons.add_circle_outline, "Plus sozlamalari", () {}),
+                  _drawerItem(Icons.folder_open, "Toifalar", () {}),
+                  _drawerItem(Icons.palette_outlined, "Mavzularni yuklab olish", () {}),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu, color: Colors.white),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+        // 3. Qulf va Papka O'CHIRILDI! 4. Faqat Qidiruv qoldi!
+        title: Container(
+          height: 42,
+          decoration: BoxDecoration(
+            color: const Color(0xFF2A2A2A),
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: TextField(
+            controller: _searchController,
+            onChanged: (v) => setState(() => searchQuery = v),
+            style: const TextStyle(color: Colors.white, fontSize: 14),
+            decoration: const InputDecoration(
+              hintText: "Qidiruv",
+              hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+              prefixIcon: Icon(Icons.search, color: Colors.grey, size: 22),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(vertical: 10),
+            ),
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          // 1. IKKONKALAR - HAMMASI OQ-KULRANG
+          Container(
+            color: Colors.black,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _tabItem(Icons.person, "Shaxsiy"),
+                _tabItem(Icons.group, "Gruppa"),
+                _tabItem(Icons.campaign, "Kanal"),
+                _tabItem(Icons.star_border, "Sevimli"),
+                _tabItem(Icons.smart_toy_outlined, "Bot"),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: chats.length,
+              itemBuilder: (context, index) {
+                final chat = chats[index];
+                // 2. CHAPGA SURIB O'CHIRISH
+                return Dismissible(
+                  key: Key(chat["name"]! + index.toString()),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Text("O'chirish",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
+                  confirmDismiss: (dir) async {
+                    return await showDialog(
+                      context: context,
+                      builder: (c) => AlertDialog(
+                        title: Text("${chat["name"]} o'chirilsinmi?"),
+                        actions: [
+                          TextButton(onPressed: () => Navigator.pop(c, false), child: const Text("Bekor")),
+                          TextButton(onPressed: () => Navigator.pop(c, true), child: const Text("O'chirish", style: TextStyle(color: Colors.red))),
+                        ],
+                      ),
+                    );
+                  },
+                  onDismissed: (_) => _deleteChat(index),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.grey[700],
+                      child: Text(chat["avatar"]!, style: const TextStyle(color: Colors.white)),
+                    ),
+                    title: Text(chat["name"]!, style: const TextStyle(color: Colors.white, fontSize: 15)),
+                    subtitle: Text(chat["msg"]!, style: const TextStyle(color: Colors.grey, fontSize: 13)),
+                    trailing: Text(chat["time"]!, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _tabItem(IconData icon, String label) {
+    return Column(
+      children: [
+        Icon(icon, color: const Color(0xFFB0B0B0), size: 26),
+        const SizedBox(height: 4),
+        Text(label, style: const TextStyle(color: Color(0xFFB0B0B0), fontSize: 11)),
+      ],
+    );
+  }
+
+  Widget _drawerItem(IconData icon, String title, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.grey[600], size: 24),
+      title: Text(title, style: const TextStyle(fontSize: 15)),
+      onTap: onTap,
+    );
+  }
 }
-function filter(t,el){
-cur=t;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');
-let titles={all:'Shaxsiy',group:'Gruppa',channel:'Kanal',fav:'Sevimli',bot:'Bot'};
-document.getElementById('title').innerText=titles[t];render();
-}
-function openChat(i){
-document.getElementById('home').style.display='none';
-document.getElementById('chatView').style.display='block';
-document.getElementById('sendBar').style.display='flex';
-document.getElementById('chatName').innerText=chats[i].name;
-document.getElementById('msgs').innerHTML=`<div class="m other">${chats[i].msg}</div><div class="m me">Salom! 👋</div>`;
-}
-function goHome(){
-document.getElementById('home').style.display='block';
-document.getElementById('chatView').style.display='none';
-document.getElementById('sendBar').style.display='none';
-}
-function send(){let v=document.getElementById('inp').value;if(!v)return;document.getElementById('msgs').innerHTML+=`<div class="m me">${v}</div>`;document.getElementById('inp').value='';}
-function openMenu(){alert('Menyu: Profilim | Sozlamalar | Yordam @Mirozex')}
-render();
-</script>
-</body>
-</html>
