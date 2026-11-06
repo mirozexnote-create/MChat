@@ -1,99 +1,110 @@
 <!DOCTYPE html>
-<html lang="uz"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MChat</title>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MChat</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
-body{background:#f8f7ff;color:#1e1b4b}
-.hidden{display:none!important}
-.login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#a78bfa,#818cf8,#c084fc,#f0abfc)}
-.logo{width:90px;height:90px;background:rgba(255,255,255,.3);border:1px solid #fff;border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900;color:#fff}
-h1{color:#fff;font-size:52px}
-.sub{color:#fff;margin-bottom:20px}
-.card{background:rgba(255,255,255,.35);border:1px solid #fff;border-radius:28px;padding:22px;width:100%;max-width:360px}
-.inp{display:flex;gap:10px;background:rgba(255,255,255,.55);border-radius:16px;padding:14px;margin-bottom:14px}
-.inp input{border:none;outline:none;background:transparent;width:100%;font-size:16px}
-.btn{width:100%;padding:15px;border:none;border-radius:16px;background:rgba(255,255,255,.45);border:1px solid #fff;color:#fff;font-size:18px;font-weight:700}
-.link{text-align:center;color:#fff;margin-top:14px}
-.app{max-width:430px;margin:0 auto;min-height:100vh;background:#f8f7ff;display:flex;flex-direction:column}
-.top{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;background:#fff}
-.avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0;background:linear-gradient(135deg,#818cf8,#c084fc);overflow:hidden}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{background:#fff;color:#111}
+header{background:#000;color:#fff;padding:10px 12px 8px;position:sticky;top:0;z-index:10}
+.top{display:flex;align-items:center;gap:12px}
+.top h1{font-size:16px;font-weight:600;flex:1}
+.top span{font-size:18px;cursor:pointer}
+.tabs{background:#000;display:flex;justify-content:space-between;padding:6px 8px 10px;gap:4px}
+.tab{flex:1;text-align:center;color:#aaa;cursor:pointer;padding:6px 2px;border-radius:10px}
+.tab.active{color:#fff;background:#222}
+.tab .ic{font-size:20px;display:block;line-height:1}
+.tab small{font-size:10px;display:block;margin-top:3px}
+.tab b{font-size:9px;background:#333;color:#fff;padding:1px 4px;border-radius:10px;position:absolute;margin:-4px 0 0 8px}
+.search{margin:8px 12px;background:#f1f1f1;border-radius:20px;padding:7px 12px;font-size:12px;color:#777}
+.chat{display:flex;gap:10px;padding:8px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:600;flex-shrink:0;overflow:hidden}
 .avatar img{width:100%;height:100%;object-fit:cover}
-.search{margin:10px 14px;background:#f1f5f9;border-radius:14px;padding:12px;display:flex;gap:8px}
-.search input{border:none;outline:none;background:transparent;width:100%}
-.chat-item{display:flex;gap:12px;padding:14px;border-bottom:1px solid #f1f5f9;align-items:center;background:#fff;cursor:pointer}
-.chat-item .info{flex:1}.chat-item .info p{font-size:13px;color:#64748b}
-.chat-head{padding:12px;display:flex;align-items:center;gap:10px;background:#fff}
-.msgs{flex:1;padding:14px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;min-height:400px}
-.msg{max-width:80%;padding:10px 14px;border-radius:18px;font-size:15px;background:#fff;align-self:flex-start}
-.msg.me{align-self:flex-end;background:linear-gradient(135deg,#c4b5fd,#818cf8);color:#fff}
-.msg small{display:block;font-size:11px;opacity:.7}
-.date{text-align:center;font-size:12px;background:#fff;padding:5px 12px;border-radius:12px;color:#64748b;margin:6px auto}
-.input-bar{padding:10px;display:flex;gap:8px;background:#fff;align-items:center}
-.input-bar input{flex:1;background:#f1f5f9;border:none;outline:none;padding:13px 16px;border-radius:20px}
-.send{width:44px;height:44px;border-radius:50%;border:none;background:linear-gradient(135deg,#a78bfa,#6366f1);color:#fff;font-size:20px}
-.prof{padding:16px}
-.prof-card{background:linear-gradient(135deg,#e0e7ff,#ddd6fe);border-radius:20px;padding:16px;display:flex;gap:14px;align-items:center}
-.pbtn{flex:1;background:#fff;border:1px solid #e2e8f0;padding:8px 6px;border-radius:20px;font-size:13px;font-weight:600;text-align:center;cursor:pointer}
-.pbtn:first-child{background:linear-gradient(135deg,#c4b5fd,#818cf8);color:#fff;border:none}
-.set-title{font-size:19px;font-weight:800;margin:20px 0 10px}
-.set{background:#fff;border-radius:18px;overflow:hidden}
-.set-row{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid #f8fafc;cursor:pointer}
-.icon-box{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;color:#fff}
-.set-row small{color:#64748b;font-size:13px;display:block}
-.arr{margin-left:auto;color:#94a3b8}
-.switch{width:52px;height:30px;background:linear-gradient(135deg,#c4b5fd,#f0abfc);border-radius:20px;position:relative;margin-left:auto}
-.switch:after{content:"";width:24px;height:24px;background:#fff;border-radius:50%;position:absolute;right:3px;top:3px}
-.nav{height:60px;background:#fff;display:flex;justify-content:space-around;align-items:center;font-size:22px}
-.detail{padding:16px}.detail-card{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px}.detail-card input{width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px;margin-top:6px;outline:none}
-.bigbtn{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#a78bfa,#6366f1);color:#fff;font-weight:700;margin-top:12px}
-.tgbtn{width:100%;padding:14px;border-radius:14px;background:#229ED9;color:#fff;font-weight:700;margin-top:12px;display:block;text-align:center;text-decoration:none}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center;z-index:99}
-.modal-box{background:#fff;width:100%;max-width:430px;border-radius:24px 24px 0 0;padding:20px;padding-bottom:30px}
-.edit-avatar{width:110px;height:110px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;color:#fff;background:linear-gradient(135deg,#818cf8,#c084fc);overflow:hidden;position:relative}
-.edit-avatar img{width:100%;height:100%;object-fit:cover}
-.cam{position:absolute;bottom:0;right:0;background:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
-body.dark{background:#0f0f1a;color:#fff}.dark .app{background:#0f0f1a}.dark .top,.dark .set,.dark .detail-card,.dark .chat-item{background:#1e1e2e;color:#fff}
-</style></head><body>
-<div id="login" class="login-wrap"><div class="logo">M</div><h1>MChat</h1><p class="sub">Connect. Chat. Collaborate.</p><div class="card"><div class="inp">👤<input id="user" placeholder="Username"></div><div class="inp">🔒<input id="pass" type="password" placeholder="Password"></div><button class="btn" onclick="login()">Log In</button><p class="link">Forgot password?</p></div></div>
-<div id="app" class="app hidden">
-<div id="listView"><div class="top"><b>MChat</b><span onclick="showProfile()">⚙️</span></div><div class="search">🔍 <input id="searchInp" oninput="filterRooms()" placeholder="Search..."></div><div id="rooms"></div></div>
-<div id="chatView" class="hidden" style="display:flex;flex-direction:column;flex:1"><div class="chat-head"><span onclick="back()">←</span><div id="chatAvatar" class="avatar" style="width:40px;height:40px"></div><div style="flex:1"><b id="chatTitle">Design Team</b><div style="font-size:12px;color:#16a34a">Online now</div></div></div><div id="msgs" class="msgs"></div><div class="input-bar"><input id="msgInput" placeholder="Message..."><button class="send" onclick="sendMsg()">➤</button></div></div>
-<div id="profileView" class="hidden"><div class="top"><span onclick="back()">←</span><b>Profilim</b><span>⚙️</span></div><div class="prof"><div class="prof-card"><div id="myAvatar" class="avatar" style="width:64px;height:64px;font-size:26px">SA</div><div style="flex:1"><b id="myName">Sardor</b><div id="myUser" style="color:#64748b;font-size:14px">@sardor</div><div id="myBio" style="font-size:13px;color:#64748b">Salom! MChat daman</div><div style="display:flex;gap:8px;margin-top:10px"><div class="pbtn" onclick="openEdit()">Profilni tahrirlash</div><div class="pbtn" onclick="shareProfile()">Ulashish</div></div></div></div>
-<div class="set-title">Sozlamalar</div><div class="set">
-<div class="set-row" onclick="openSetting('notif')"><div class="icon-box" style="background:#818cf8">🔔</div><div><b>Bildirishnomalar</b></div><div class="switch"></div></div>
-<div class="set-row" onclick="openSetting('privacy')"><div class="icon-box" style="background:#a78bfa">🛡️</div><div><b>Maxfiylik</b></div><div class="arr">›</div></div>
-<div class="set-row" onclick="openSetting('theme')"><div class="icon-box" style="background:#fb7185">🎨</div><div><b>Tashqi korinish</b><small id="themeLabel">Mavzu: Yorug</small></div><div class="arr">›</div></div>
-<div class="set-row" onclick="openSetting('data')"><div class="icon-box" style="background:#38bdf8">☁️</div><div><b>Malumotlar</b><small>1.2 GB ishlatilgan</small></div><div class="arr">›</div></div>
-<div class="set-row" onclick="openSetting('help')"><div class="icon-box" style="background:#a78bfa">❓</div><div><b>Yordam</b></div><div class="arr">›</div></div>
-</div><div class="set-title">Boshqalar</div><div class="set"><div class="set-row" onclick="logout()"><div class="icon-box" style="background:#fb7185">📦</div><div><b style="color:#ef4444">Chiqish</b></div><div class="arr">›</div></div></div>
-</div></div>
-<div id="settingView" class="hidden"><div class="top"><span onclick="showProfile()">←</span><b id="settingTitle">Sozlama</b><span></span></div><div class="detail" id="settingBody"></div></div>
-<div class="nav"><span onclick="back()">💬</span><span>👥</span><span onclick="showProfile()">👤</span></div></div>
-<div id="editModal" class="modal hidden" onclick="if(event.target===this)closeEdit()"><div class="modal-box"><div style="text-align:center;font-weight:800;font-size:18px;margin-bottom:12px">Profilni tahrirlash</div><div class="edit-avatar" id="editAvatar" onclick="document.getElementById('fileInput').click()"><span>SA</span><div class="cam">📷</div></div><p style="text-align:center;color:#64748b;font-size:13px;margin-bottom:12px">Rasmni ozgartirish uchun ustiga bosing</p><input type="file" id="fileInput" accept="image/*" style="display:none" onchange="changeAvatar(event)"><div class="detail-card"><label>Ismingiz</label><input id="editName"><label style="display:block;margin-top:12px">Bio</label><input id="editBio"></div><button class="bigbtn" onclick="saveProfile()">Saqlash</button><button class="bigbtn" style="background:#f1f5f9;color:#334155" onclick="closeEdit()">Bekor qilish</button></div></div>
+.info{flex:1;min-width:0}
+.row{display:flex;justify-content:space-between;align-items:center}
+.name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.time{font-size:11px;color:#7a7a7a;flex-shrink:0;margin-left:6px}
+.msg{font-size:12px;color:#5f6368;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.badge{background:#000;color:#fff;font-size:10px;min-width:16px;height:16px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px}
+.msgbox{display:none;padding:12px}
+.msgbox.active{display:block}
+.m{max-width:75%;padding:7px 10px;border-radius:12px;font-size:13px;margin:6px 0}
+.me{background:#000;color:#fff;margin-left:auto}
+.other{background:#f1f1f1}
+input,button{font-size:13px}
+#sendBar{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;padding:8px;display:flex;gap:6px;border-top:1px solid #eee}
+#sendBar input{flex:1;padding:8px 12px;border-radius:20px;border:1px solid #ddd;outline:none;font-size:13px}
+#sendBar button{background:#000;color:#fff;border:none;padding:8px 14px;border-radius:20px}
+.back{cursor:pointer;font-size:13px}
+</style>
+</head>
+<body>
+
+<div id="home">
+<header>
+<div class="top"><span onclick="openMenu()">☰</span><h1 id="title">Shaxsiy</h1><span>🔒</span><span>🔍</span><span>📁</span></div>
+<div class="tabs">
+<div class="tab active" onclick="filter('all',this)"><span class="ic">👤</span><small>Shaxsiy</small></div>
+<div class="tab" onclick="filter('group',this)"><span class="ic">👥</span><small>Gruppa</small></div>
+<div class="tab" onclick="filter('channel',this)"><span class="ic">📣</span><small>Kanal</small></div>
+<div class="tab" onclick="filter('fav',this)"><span class="ic">⭐</span><small>Sevimli</small></div>
+<div class="tab" onclick="filter('bot',this)"><span class="ic">🤖</span><small>Bot</small></div>
+</div>
+</header>
+<div class="search">🔍 Qidirish...</div>
+<div id="list"></div>
+</div>
+
+<div id="chatView" style="display:none">
+<header><div class="top"><span class="back" onclick="goHome()">←</span><h1 id="chatName">Chat</h1><span>📞</span><span>⋮</span></div></header>
+<div class="msgbox active" id="msgs"></div>
+</div>
+<div id="sendBar"><input id="inp" placeholder="Xabar yozing..."><button onclick="send()">➤</button></div>
+
 <script>
-var TELEGRAM="Mirozex";
-var me=localStorage.getItem("mchat_user")||"";
-var current="global";
-var savedAvatar=localStorage.getItem("mchat_avatar")||"";
-var savedBio=localStorage.getItem("mchat_bio")||"Salom! MChat daman";
-var rooms=[{id:"global",name:"Meta Insights",color:"#a78bfa",icon:"📣",last:"Weekly design roundup"},{id:"design",name:"Design Team",color:"#818cf8",icon:"👥",last:"Love this layout!"},{id:"aria",name:"Aria Chen",color:"#38bdf8",icon:"A",last:"Sent the mockups"},{id:"product",name:"Product Launch",color:"#fb7185",icon:"#",last:"Roadmap update"},{id:"noah",name:"Noah Kim",color:"#a78bfa",icon:"NK",last:"Thanks!"}];
-function updateAvatar(){var av=document.getElementById("myAvatar");if(savedAvatar){av.innerHTML="<img src="+savedAvatar+">"}else{av.textContent=me.slice(0,2).toUpperCase()}var ea=document.getElementById("editAvatar");if(savedAvatar){ea.innerHTML="<img src="+savedAvatar+"><div class=cam>📷</div>"}else{ea.innerHTML="<span>"+me.slice(0,2).toUpperCase()+"</span><div class=cam>📷</div>"}}
-function login(){var u=document.getElementById("user").value.trim();if(!u){alert("Ismingni yoz!");return}me=u;localStorage.setItem("mchat_user",u);showApp()}
-function showApp(){document.getElementById("login").classList.add("hidden");document.getElementById("app").classList.remove("hidden");document.getElementById("myName").textContent=me;document.getElementById("myUser").textContent="@"+me.toLowerCase();document.getElementById("myBio").textContent=savedBio;updateAvatar();renderRooms();loadMsgs();setInterval(loadMsgs,3000)}
-function logout(){localStorage.removeItem("mchat_user");location.reload()}
-function renderRooms(){var h="";for(var i=0;i<rooms.length;i++){var r=rooms[i];h+="<div class=chat-item onclick=openRoom('"+r.id+"')><div class=avatar style=background:"+r.color+">"+r.icon+"</div><div class=info><b>"+r.name+"</b><p>"+r.last+"</p></div></div>"}document.getElementById("rooms").innerHTML=h}
-function filterRooms(){var q=document.getElementById("searchInp").value.toLowerCase();var h="";for(var i=0;i<rooms.length;i++){var r=rooms[i];if(r.name.toLowerCase().indexOf(q)===-1)continue;h+="<div class=chat-item onclick=openRoom('"+r.id+"')><div class=avatar style=background:"+r.color+">"+r.icon+"</div><div class=info><b>"+r.name+"</b><p>"+r.last+"</p></div></div>"}document.getElementById("rooms").innerHTML=h}
-function openRoom(id){current=id;var r=null;for(var i=0;i<rooms.length;i++){if(rooms[i].id===id)r=rooms[i]}document.getElementById("listView").classList.add("hidden");document.getElementById("profileView").classList.add("hidden");document.getElementById("settingView").classList.add("hidden");document.getElementById("chatView").classList.remove("hidden");document.getElementById("chatTitle").textContent=r.name;document.getElementById("chatAvatar").textContent=r.icon;document.getElementById("chatAvatar").style.background=r.color;loadMsgs()}
-function back(){document.getElementById("chatView").classList.add("hidden");document.getElementById("profileView").classList.add("hidden");document.getElementById("settingView").classList.add("hidden");document.getElementById("listView").classList.remove("hidden")}
-function showProfile(){document.getElementById("listView").classList.add("hidden");document.getElementById("chatView").classList.add("hidden");document.getElementById("settingView").classList.add("hidden");document.getElementById("profileView").classList.remove("hidden")}
-function openEdit(){document.getElementById("editName").value=me;document.getElementById("editBio").value=savedBio;updateAvatar();document.getElementById("editModal").classList.remove("hidden")}
-function closeEdit(){document.getElementById("editModal").classList.add("hidden")}
-function changeAvatar(e){var f=e.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(ev){savedAvatar=ev.target.result;localStorage.setItem("mchat_avatar",savedAvatar);updateAvatar();alert("Rasm tanlandi! Saqlash ni bosing")};rd.readAsDataURL(f)}
-function saveProfile(){var n=document.getElementById("editName").value.trim();var b=document.getElementById("editBio").value.trim();if(n){me=n;localStorage.setItem("mchat_user",me)}if(b){savedBio=b;localStorage.setItem("mchat_bio",b)}document.getElementById("myName").textContent=me;document.getElementById("myUser").textContent="@"+me.toLowerCase();document.getElementById("myBio").textContent=savedBio;updateAvatar();closeEdit();alert("Profil saqlandi!")}
-function shareProfile(){prompt("Nusxalang:","MChat: @"+me+" Telegram: @"+TELEGRAM)}
-function openSetting(type){showProfile();document.getElementById("profileView").classList.add("hidden");document.getElementById("settingView").classList.remove("hidden");var t=document.getElementById("settingTitle");var b=document.getElementById("settingBody");if(type==="notif"){t.textContent="Bildirishnomalar";b.innerHTML="<div class=detail-card><b>🔔 Bildirishnomalar yoqilgan</b><p style=color:#64748b>Yangi xabarlar haqida xabar berish</p><button class=bigbtn onclick=alert('Saqlandi!')>Saqalsh</button></div>"}if(type==="privacy"){t.textContent="Maxfiylik";b.innerHTML="<div class=detail-card><b>Oxirgi korilgan</b><p style=color:#64748b>Hamma korishi mumkin</p></div><div class=detail-card><b>Bloklanganlar</b><p style=color:#64748b>0 ta odam</p></div>"}if(type==="theme"){t.textContent="Tashqi korinish";b.innerHTML="<div class=detail-card><b>Mavzu</b><p style=color:#64748b>Hozir: Yorug</p><button class=bigbtn onclick=toggleTheme()>Qorongu / Yorug almashtirish</button></div>"}if(type==="data"){t.textContent="Malumotlar";b.innerHTML="<div class=detail-card><b>Xotira: 1.2 GB</b><button class=bigbtn onclick=alert('Kesh tozalandi!')>Keshni tozalash</button></div>"}if(type==="help"){t.textContent="Yordam";b.innerHTML="<div class=detail-card><b>Yordam kerakmi?</b><p style=color:#64748b>Muammo bolsa adminga yozing: <b style=color:#229ED9>@Mirozex</b></p><a class=tgbtn href=https://t.me/Mirozex target=_blank>Telegramda yozish - @Mirozex</a></div><div class=detail-card><b>Tez-tez soraladigan savollar</b><p style=color:#64748b>1. Profil rasmini qanday ozgartiraman?<br>Profil - Profilni tahrirlash - Rasm ustiga bosing.<br><br>2. Qorongu mavzu bormi?<br>Ha, Tashqi korinish dan yoqing.</p></div>"}}
-function toggleTheme(){document.body.classList.toggle("dark");var d=document.body.classList.contains("dark");document.getElementById("themeLabel").textContent="Mavzu: "+(d?"Qorongu":"Yorug");openSetting("theme")}
-async function loadMsgs(){var box=document.getElementById("msgs");try{var res=await fetch("https://ntfy.sh/mchat-sardor-"+current+"/json?since=all&poll=1");var txt=await res.text();var lines=txt.trim().split("\n").filter(Boolean);if(!lines.length){box.innerHTML="<div class=date>Today</div><div class=msg><small>Aria</small>Love this layout!</div>";return}var html="<div class=date>Live Chat</div>";lines.slice(-30).forEach(function(l){try{var j=JSON.parse(l);var c={};try{c=JSON.parse(j.message)}catch(e){c={user:j.title||"Kimdir",text:j.message}}if(!c.text)return;var isMe=c.user===me;html+="<div class=msg "+(isMe?"me":"")+"><small>"+(isMe?"You":c.user)+"</small>"+c.text+"</div>"}catch(e){}});box.innerHTML=html;box.scrollTop=box.scrollHeight}catch(e){}}
-async function sendMsg(){var inp=document.getElementById("msgInput");var t=inp.value.trim();if(!t)return;var time=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});var data=JSON.stringify({user:me,text:t,time:time});inp.value="";try{await fetch("https://ntfy.sh/mchat-sardor-"+current,{method:"POST",body:data,headers:{Title:me}})}catch(e){}var box=document.getElementById("msgs");box.innerHTML+="<div class=msg me><small>You</small>"+t+"</div>";box.scrollTop=box.scrollHeight;setTimeout(loadMsgs,1000)}
-document.getElementById("msgInput").addEventListener("keydown",function(e){if(e.key==="Enter")sendMsg()});
-if(me)showApp();
-</script></body></html>
+let chats=[
+{name:"Saqlangan xabarlar",msg:"<!DOCTYPE html> <html lang=",time:"21:01",type:"all",color:"#0ea5e9",icon:"🔖"},
+{name:"#ZxNFTz",msg:"1. Shoxjohon Mamatov 2. Oyb...",time:"26-sen",type:"group",color:"#111",icon:"🖼️"},
+{name:"Sarvar Madrahimov",msg:"1. Azizbek Umarov 2. Abduqodi...",time:"19-okt",type:"group",color:"#333",icon:"👤"},
+{name:"#Mirozex |",msg:"🥰 Stiker",time:"03-sen",type:"fav",color:"#111",icon:"😎"},
+{name:"Rasulbek",msg:"👋 Stiker",time:"15-okt",type:"all",color:"#111",icon:"🌑"},
+{name:"Nazarbek",msg:"Qoralama: +998941153868",time:"14-okt",type:"all",color:"#f97316",icon:"N"},
+{name:"Admen",msg:"✅ Stiker",time:"07-okt",type:"all",color:"#111",icon:"🎭"},
+{name:"DIYORBek",msg:"🎥 Video",time:"05-okt",type:"all",color:"#111",icon:"🌙"},
+{name:"OFFLINE 📴",msg:"🥰 Stiker",time:"07-iyun",type:"bot",color:"#0ea5e9",icon:"👻"},
+{name:"MChat Bot",msg:"/start buyrug'i bajarildi",time:"Kecha",type:"bot",color:"#10b981",icon:"🤖"},
+{name:"Yangiliklar Kanal",msg:"Yangi post: Haftalik yangilik",time:"Kecha",type:"channel",color:"#7c3aed",icon:"📣"},
+];
+let cur='all';
+function render(){
+let l=document.getElementById('list');l.innerHTML='';
+chats.filter(c=>cur=='all'||c.type==cur||(cur=='all')).forEach((c,i)=>{
+if(cur!='all'&&c.type!=cur&&!(cur=='fav'&&c.type=='fav'))return;
+if(cur=='all'&&false)return;
+l.innerHTML+=`<div class="chat" onclick="openChat(${chats.indexOf(c)})"><div class="avatar" style="background:${c.color}">${c.icon}</div><div class="info"><div class="row"><span class="name">${c.name}</span><span class="time">${c.time}</span></div><div class="msg">${c.msg}</div></div></div>`
+});
+}
+function filter(t,el){
+cur=t;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');
+let titles={all:'Shaxsiy',group:'Gruppa',channel:'Kanal',fav:'Sevimli',bot:'Bot'};
+document.getElementById('title').innerText=titles[t];render();
+}
+function openChat(i){
+document.getElementById('home').style.display='none';
+document.getElementById('chatView').style.display='block';
+document.getElementById('sendBar').style.display='flex';
+document.getElementById('chatName').innerText=chats[i].name;
+document.getElementById('msgs').innerHTML=`<div class="m other">${chats[i].msg}</div><div class="m me">Salom! 👋</div>`;
+}
+function goHome(){
+document.getElementById('home').style.display='block';
+document.getElementById('chatView').style.display='none';
+document.getElementById('sendBar').style.display='none';
+}
+function send(){let v=document.getElementById('inp').value;if(!v)return;document.getElementById('msgs').innerHTML+=`<div class="m me">${v}</div>`;document.getElementById('inp').value='';}
+function openMenu(){alert('Menyu: Profilim | Sozlamalar | Yordam @Mirozex')}
+render();
+</script>
+</body>
+</html>
