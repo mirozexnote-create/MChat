@@ -1,118 +1,55 @@
 <!DOCTYPE html>
-<html lang="uz"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MChat</title>
+<html lang="uz"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MChat</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-body{background:linear-gradient(135deg,#a78bfa,#818cf8,#c084fc,#f0abfc);min-height:100vh;color:#1e1b4b}
+body{background:#f8f7ff;color:#1e1b4b}
 .hidden{display:none!important}
-.login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.6),transparent 40%),radial-gradient(circle at 80% 80%,rgba(255,255,255,.5),transparent 40%)}
-.logo{width:90px;height:90px;background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.6);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900;color:white;backdrop-filter:blur(10px);box-shadow:0 20px 40px rgba(0,0,0,.15)}
-h1{color:white;font-size:52px;margin:10px 0 2px;letter-spacing:-1px}
+.login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#a78bfa,#818cf8,#c084fc,#f0abfc)}
+.logo{width:90px;height:90px;background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.6);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900;color:white}
+h1{color:white;font-size:52px;margin:10px 0 2px}
 .sub{color:rgba(255,255,255,.85);margin-bottom:22px}
-.card{background:rgba(255,255,255,.35);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.6);border-radius:28px;padding:22px;width:100%;max-width:360px;box-shadow:0 20px 50px rgba(0,0,0,.15)}
-.inp{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.7);border-radius:16px;padding:14px;margin-bottom:14px}
-.inp input{border:none;outline:none;background:transparent;width:100%;font-size:16px;color:#4c1d95}
-.inp input::placeholder{color:#7c6aae}
-.btn{width:100%;padding:15px;border:none;border-radius:16px;background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.7);color:white;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.1)}
-.link{text-align:center;color:white;margin-top:16px;font-size:14px;cursor:pointer}
-.link b{text-decoration:underline}
-/* APP */
-.app{max-width:430px;margin:0 auto;min-height:100vh;background:rgba(255,255,255,.92);display:flex;flex-direction:column}
-.top{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;background:white;position:sticky;top:0;z-index:5}
-.top b{font-size:20px}
-.avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;flex-shrink:0}
-.search{margin:10px 14px;background:#f1f5f9;border-radius:14px;padding:12px;display:flex;gap:8px;color:#64748b}
+.card{background:rgba(255,255,255,.35);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.6);border-radius:28px;padding:22px;width:100%;max-width:360px}
+.inp{display:flex;gap:10px;background:rgba(255,255,255,.55);border-radius:16px;padding:14px;margin-bottom:14px}
+.inp input{border:none;outline:none;background:transparent;width:100%;font-size:16px}
+.btn{width:100%;padding:15px;border:none;border-radius:16px;background:rgba(255,255,255,.45);border:1px solid white;color:white;font-size:18px;font-weight:700}
+.link{text-align:center;color:white;margin-top:16px;font-size:14px}
+.app{max-width:430px;margin:0 auto;min-height:100vh;background:#f8f7ff;display:flex;flex-direction:column}
+.top{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;background:white}
+.avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;flex-shrink:0;object-fit:cover;overflow:hidden;background:linear-gradient(135deg,#818cf8,#c084fc)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.search{margin:10px 14px;background:#f1f5f9;border-radius:14px;padding:12px;display:flex;gap:8px}
 .search input{border:none;outline:none;background:transparent;width:100%}
 .tabs{display:flex;gap:8px;padding:0 14px 10px}
-.tab{padding:8px 18px;border-radius:20px;background:#f1f5f9;font-size:14px;font-weight:600;cursor:pointer}
-.tab.active{background:linear-gradient(90deg,#c4b5fd,#818cf8);color:white}
-.chat-item{display:flex;gap:12px;padding:14px;border-bottom:1px solid #f1f5f9;cursor:pointer;align-items:center}
-.chat-item:active{background:#f8fafc}
-.chat-item .info{flex:1}
-.chat-item .info b{font-size:16px}
-.chat-item .info p{font-size:13px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
-.badge{background:#a78bfa;color:white;font-size:12px;padding:2px 8px;border-radius:10px}
-.time{font-size:12px;color:#94a3b8}
-/* CHAT VIEW */
-.chat-head{padding:12px;display:flex;align-items:center;gap:10px;background:white;box-shadow:0 2px 10px rgba(0,0,0,.05);position:sticky;top:0}
-.msgs{flex:1;padding:14px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;background:#fcfcff}
-.msg{max-width:80%;padding:10px 14px;border-radius:18px;font-size:15px;line-height:1.4;background:white;box-shadow:0 2px 8px rgba(0,0,0,.06);align-self:flex-start}
+.tab{padding:8px 18px;border-radius:20px;background:#eef2ff;font-size:14px;font-weight:600}
+.chat-item{display:flex;gap:12px;padding:14px;border-bottom:1px solid #f1f5f9;align-items:center;background:white}
+.chat-item .info{flex:1}.chat-item .info p{font-size:13px;color:#64748b}
+.chat-head{padding:12px;display:flex;align-items:center;gap:10px;background:white}
+.msgs{flex:1;padding:14px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;background:#fcfcff;min-height:400px}
+.msg{max-width:80%;padding:10px 14px;border-radius:18px;font-size:15px;background:white;box-shadow:0 2px 8px rgba(0,0,0,.06);align-self:flex-start}
 .msg.me{align-self:flex-end;background:linear-gradient(135deg,#c4b5fd,#818cf8);color:white}
-.msg small{display:block;font-size:11px;opacity:.7;margin-bottom:2px}
+.msg small{display:block;font-size:11px;opacity:.7}
 .date{text-align:center;font-size:12px;background:white;padding:5px 12px;border-radius:12px;color:#64748b;margin:6px auto}
 .input-bar{padding:10px;display:flex;gap:8px;background:white;align-items:center}
 .input-bar input{flex:1;background:#f1f5f9;border:none;outline:none;padding:13px 16px;border-radius:20px;font-size:15px}
-.send{width:44px;height:44px;border-radius:50%;border:none;background:linear-gradient(135deg,#a78bfa,#6366f1);color:white;font-size:20px;cursor:pointer}
-/* PROFILE */
-.prof{padding:20px}
-.prof-card{background:linear-gradient(135deg,#e0e7ff,#ddd6fe);border-radius:20px;padding:18px;display:flex;gap:14px;align-items:center}
-.set{margin-top:18px;background:white;border-radius:16px;overflow:hidden}
-.set div{padding:14px;display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;cursor:pointer}
-.nav{height:60px;background:white;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #eee;font-size:22px;position:sticky;bottom:0}
-.nav span{cursor:pointer;opacity:.4}.nav span.on{opacity:1}
-.online{font-size:12px;color:#16a34a}
-</style></head>
-<body>
-
-<!-- LOGIN -->
-<div id="login" class="login-wrap">
-<div class="logo">M</div><h1>MChat</h1><p class="sub">Connect. Chat. Collaborate.</p>
-<div class="card">
-<div class="inp">👤<input id="user" placeholder="Username"></div>
-<div class="inp">🔒<input id="pass" type="password" placeholder="Password"></div>
-<button class="btn" onclick="login()">Log In</button>
-<p class="link" onclick="alert('Parol shart emas, ismingni yozib kir!')">Forgot password?</p>
-</div><p class="link" style="margin-top:18px">Don't have an account? <b>Sign Up</b></p>
-</div>
-
-<!-- APP -->
-<div id="app" class="app hidden">
-<div id="listView">
-<div class="top"><b>💬 MChat</b><span onclick="showProfile()" style="font-size:22px;cursor:pointer">⚙️</span></div>
-<div class="search">🔍 <input placeholder="Search conversations, channels, groups..."></div>
-<div class="tabs"><div class="tab active" onclick="filterTab(this,'all')">All</div><div class="tab" onclick="filterTab(this,'channel')">Channels</div><div class="tab" onclick="filterTab(this,'group')">Groups</div></div>
-<div id="rooms"></div>
-</div>
-
-<div id="chatView" class="hidden" style="display:flex;flex-direction:column;flex:1">
-<div class="chat-head"><span onclick="back()" style="font-size:22px;cursor:pointer">←</span><div id="chatAvatar" class="avatar" style="width:40px;height:40px"></div><div style="flex:1"><b id="chatTitle">Design Team</b><div class="online" id="chatSub">● Online now</div></div><span>📞</span><span>📹</span></div>
-<div id="msgs" class="msgs"></div>
-<div class="input-bar"><span style="font-size:22px">＋</span><input id="msgInput" placeholder="Message..."><span style="font-size:22px">😊</span><button class="send" onclick="sendMsg()">➤</button></div>
-</div>
-
-<div id="profileView" class="hidden">
-<div class="top"><span onclick="back()" style="font-size:22px;cursor:pointer">←</span><b>Profilim</b><span>⚙️</span></div>
-<div class="prof"><div class="prof-card"><div id="myAvatar" class="avatar" style="width:64px;height:64px;font-size:26px;background:linear-gradient(135deg,#818cf8,#c084fc)">NK</div><div><b id="myName" style="font-size:19px">Sardor</b><div id="myUser" style="color:#64748b">@sardor — Online now</div><div style="margin-top:8px;display:flex;gap:8px"><span style="background:white;padding:6px 12px;border-radius:20px;font-size:13px">✏️ Profilni tahrirlash</span><span style="background:white;padding:6px 12px;border-radius:20px;font-size:13px">↗ Ulashish</span></div></div></div>
-<h3 style="margin:18px 0 10px">Sozlamalar</h3><div class="set"><div><span>🔔 Bildirishnomalar</span><span>🟣</span></div><div><span>🛡️ Maxfiylik va xavfsizlik</span><span>›</span></div><div><span>🎨 Tashqi ko'rinish<br><small style="color:#64748b">Mavzu: Yorug' • Gradient uslub</small></span><span>›</span></div><div><span>☁️ Ma'lumotlar va xotira</span><span>›</span></div><div><span>❓ Yordam va qo'llab-quvvatlash</span><span>›</span></div></div>
-<h3 style="margin:16px 0 10px">Boshqalar</h3><div class="set"><div onclick="logout()"><span style="color:#ef4444">📦 Chiqish</span><span>›</span></div></div></div>
-</div>
-
-<div class="nav"><span class="on" id="navChat" onclick="back()">💬</span><span>👥</span><span onclick="showProfile()">👤</span></div>
-</div>
-
-<script>
-let me=localStorage.getItem('mchat_user')||'';
-let current='global';
-let rooms=[
-{id:'global',name:'Meta Insights',type:'channel',desc:'Channel • 12.4k subscribers',color:'#a78bfa',icon:'📣',last:'Weekly design roundup now live'},
-{id:'design',name:'Design Team',type:'group',desc:'128 members • 5 online',color:'#818cf8',icon:'👥',last:'Love this new layout!'},
-{id:'aria',name:'Aria Chen',type:'all',desc:'Sent the mockups...',color:'#38bdf8',icon:'A',last:'Sent the mockups, let me know'},
-{id:'product',name:'Product Launch',type:'channel',desc:'Roadmap',color:'#fb7185',icon:'#',last:"I'll update the roadmap"},
-{id:'noah',name:'Noah Kim',type:'all',desc:'Thanks!',color:'#a78bfa',icon:'NK',last:"Thanks! I'll review"}
-];
-function login(){let u=document.getElementById('user').value.trim();if(!u){alert('Ismingni yoz!');return}me=u;localStorage.setItem('mchat_user',u);showApp()}
-function showApp(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('myName').textContent=me;document.getElementById('myUser').textContent='@'+me.toLowerCase().replace(/\s/g,'_')+' — Online now';document.getElementById('myAvatar').textContent=me.slice(0,2).toUpperCase();renderRooms();loadMsgs();setInterval(loadMsgs,3000)}
-function logout(){localStorage.removeItem('mchat_user');location.reload()}
-function renderRooms(filter='all'){let h='';rooms.forEach(r=>{if(filter!=='all'&&r.type!==filter&&!(filter==='all')){} h+=`<div class="chat-item" onclick="openRoom('${r.id}')"><div class="avatar" style="background:${r.color}">${r.icon}</div><div class="info"><b>${r.name} ${r.type==='channel'?'✔️':''}</b><p>${r.last}</p></div><span class="time">10:02</span></div>`});document.getElementById('rooms').innerHTML=h}
-function filterTab(el,t){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderRooms(t)}
-function openRoom(id){current=id;let r=rooms.find(x=>x.id===id);document.getElementById('listView').classList.add('hidden');document.getElementById('profileView').classList.add('hidden');document.getElementById('chatView').classList.remove('hidden');document.getElementById('chatTitle').textContent=r.name;document.getElementById('chatSub').textContent=r.desc;document.getElementById('chatAvatar').textContent=r.icon;document.getElementById('chatAvatar').style.background=r.color;loadMsgs()}
-function back(){document.getElementById('chatView').classList.add('hidden');document.getElementById('profileView').classList.add('hidden');document.getElementById('listView').classList.remove('hidden')}
-function showProfile(){document.getElementById('listView').classList.add('hidden');document.getElementById('chatView').classList.add('hidden');document.getElementById('profileView').classList.remove('hidden')}
-async function loadMsgs(){
-try{let res=await fetch('https://dweet.io/get/dweets/for/mchat-'+current);let j=await res.json();let box=document.getElementById('msgs');if(!j.with||!j.with.length){box.innerHTML='<div class="date">Today • Oct 15</div><div class="msg"><small>Aria • 09:45</small>Love this new layout! The gradient bubbles look amazing ✨</div>';return}
-let html='<div class="date">Today • Live Chat</div>';let arr=j.with.reverse().slice(-30);arr.forEach(d=>{let c=d.content;if(!c.text)return;let isMe=c.user===me;html+=`<div class="msg ${isMe?'me':''}"><small>${isMe?'You':c.user} • ${c.time||''}</small>${c.text}</div>`});box.innerHTML=html;box.scrollTop=box.scrollHeight;}catch(e){}
-}
-async function sendMsg(){let inp=document.getElementById('msgInput');let t=inp.value.trim();if(!t)return;inp.value='';let time=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});await fetch('https://dweet.io/dweet/for/mchat-'+current,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:me,text:t,time:time})});setTimeout(loadMsgs,800)}
-document.getElementById('msgInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg()});
-if(me)showApp();
-</script></body></html>
+.send{width:44px;height:44px;border-radius:50%;border:none;background:linear-gradient(135deg,#a78bfa,#6366f1);color:white;font-size:20px}
+.prof{padding:16px}
+.prof-card{background:linear-gradient(135deg,#e0e7ff,#ddd6fe);border-radius:20px;padding:16px;display:flex;gap:14px;align-items:center}
+.prof-btns{display:flex;gap:8px;margin-top:10px}
+.pbtn{flex:1;background:white;border:1px solid #e2e8f0;padding:8px 6px;border-radius:20px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;cursor:pointer}
+.pbtn:first-child{background:linear-gradient(135deg,#c4b5fd,#818cf8);color:white;border:none}
+.set-title{font-size:19px;font-weight:800;margin:20px 0 10px}
+.set{background:white;border-radius:18px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.03)}
+.set-row{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid #f8fafc;cursor:pointer}
+.set-row:last-child{border:none}
+.icon-box{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;color:white}
+.set-row b{font-size:15px;display:block}
+.set-row small{color:#64748b;font-size:13px}
+.set-row .arr{margin-left:auto;color:#94a3b8;font-size:18px}
+.switch{width:52px;height:30px;background:linear-gradient(135deg,#c4b5fd,#f0abfc);border-radius:20px;position:relative;margin-left:auto;flex-shrink:0;cursor:pointer}
+.switch::after{content:'';width:24px;height:24px;background:white;border-radius:50%;position:absolute;right:3px;top:3px;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.switch.off{background:#cbd5e1}.switch.off::after{right:auto;left:3px}
+.nav{height:60px;background:white;display:flex;justify-content:space-around;align-items:center;font-size:22px;border-top:1px solid #eee}
+.nav span{opacity:.35}.nav span.on{opacity:1}
+.detail{padding:16px}.detail-card{background:white;border-radius:18px;padding:16px;margin-bottom:12px}.detail-card input{width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px;margin-top:6px;font-size:15px;outline:none}
+.bigbtn{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#a78bfa,#6366f1);color:white;font-weight:700;font-size:16px;margin-top:12px}
+.tgbtn{width:100%;padding:14px;border:none;border-radius:14px;background:#229ED9;color:white;font-weight:700;font-size:16px;margin-top:12px;display:block;text-align:center;text-decoration
